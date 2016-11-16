@@ -43,7 +43,7 @@ module.exports = function (plugin) {
     }
   }
 
-  function build(deps, kibanaVersion) {
+  function build(buildId, deps, kibanaVersion) {
     var files = [
       'package.json',
       'index.js',
