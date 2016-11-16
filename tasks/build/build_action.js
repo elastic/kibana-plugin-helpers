@@ -80,4 +80,7 @@ module.exports = function (plugin) {
       .pipe(zip(`${buildId}.zip`))
       .pipe(vfs.dest(join(plugin.root, 'build')));
   }
+
+  main();
+
 };
