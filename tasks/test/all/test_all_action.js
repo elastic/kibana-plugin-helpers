@@ -1,4 +1,4 @@
 module.exports = function testAllAction(plugin, run) {
-  run('testServer')();
-  run('testBrowser')();
+  run('testServer');
+  run('testBrowser');
 };
