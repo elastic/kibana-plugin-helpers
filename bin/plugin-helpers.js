@@ -28,7 +28,7 @@ program
   .command('test')
   .description('Run the server and browser tests')
   .on('--help', docs('test/all'))
-  .action(run('test/all'));
+  .action(run('testAll'));
 
 program
   .command('test:browser')
@@ -36,13 +36,13 @@ program
   .option('--dev', 'Enable dev mode, keeps the test server running')
   .option('-p, --plugins <plugin-ids>', 'Manually specify which plugins\' test bundles to run')
   .on('--help', docs('test/browser'))
-  .action(run('test/browser'));
+  .action(run('testBrowser'));
 
 program
   .command('test:server [files...]')
   .description('Run the server tests using mocha')
   .on('--help', docs('test/server'))
-  .action(run('test/server'));
+  .action(run('testServer'));
 
 program
   .parse(process.argv);
