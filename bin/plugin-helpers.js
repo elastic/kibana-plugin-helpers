@@ -25,7 +25,7 @@ enableCollectingUnknownOptions(
     .on('--help', docs('start'))
     .action(taskRunner(function (command) {
       run('start', {
-        flags: command.unkownOptions
+        flags: command.unknownOptions
       });
     }))
 );
