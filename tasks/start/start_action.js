@@ -1,3 +1,5 @@
+var execFileSync = require('child_process').execFileSync;
+
 module.exports = function (plugin, run, command) {
   var execFileSync = require('child_process').execFileSync;
 
