@@ -39,11 +39,13 @@ program
   }));
 
 program
-  .command('test')
+  .command('test [files...]')
   .description('Run the server and browser tests')
   .on('--help', docs('test/all'))
   .action(taskRunner(function (command, files) {
-    run('testAll');
+    run('testAll', {
+      files: files
+    });
   }));
 
 program
