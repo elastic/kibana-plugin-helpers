@@ -8,7 +8,7 @@ module.exports = function (plugin, run, options) {
   options = options || {};
 
   var cmd = 'mocha';
-  var testPaths = (options.files && options.files.length) ? options.files : 'server/**/__tests__/**/*.js';
+  var testPaths = (options.files && options.files.length) ? options.files : plugin.serverTestPaths;
   var args = ['--require', mochaSetupJs].concat(testPaths);
   var path = `${kibanaBins}${delimiter}${process.env.PATH}`;
 
