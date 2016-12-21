@@ -34,8 +34,13 @@ program
   .command('build')
   .description('Build a distributable archive')
   .on('--help', docs('build'))
-  .action(taskRunner(function () {
-    run('build');
+  .option('-b, --build-version <version>', 'Version for the build output')
+  .option('-k, --kibana-version <version>', 'Kibana version for the build output')
+  .action(taskRunner(function (command, files) {
+    run('build', {
+      buildVersion: command.buildVersion,
+      kibanaVersion: command.kibanaVersion,
+    });
   }));
 
 program

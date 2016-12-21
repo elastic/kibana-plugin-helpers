@@ -6,17 +6,23 @@ var join = require('path').join;
 var inquirer = require('inquirer');
 var execFileSync = require('child_process').execFileSync;
 
-module.exports = function (plugin) {
+module.exports = function (plugin, run, options) {
+  var buildVersion = plugin.version;
   var kibanaVersion = (plugin.pkg.kibana && plugin.pkg.kibana.version) || plugin.pkg.version;
+
+  // allow options to override plugin info
+  if (options.buildVersion) buildVersion = options.buildVersion;
+  if (options.kibanaVersion) kibanaVersion = options.kibanaVersion;
+
   var deps = Object.keys(plugin.pkg.dependencies || {});
 
   return new Promise(function (resolve, reject) {
     if (kibanaVersion === 'kibana') {
       askForKibanaVersion(function (customKibanaVersion) {
-        build(plugin, customKibanaVersion, deps, onComplete);
+        build(plugin, buildVersion, customKibanaVersion, deps, onComplete);
       });
     } else {
-      build(plugin, kibanaVersion, deps, onComplete);
+      build(plugin, buildVersion, kibanaVersion, deps, onComplete);
     }
 
     function onComplete(err) {
@@ -72,7 +78,7 @@ function gitInfo(rootPath) {
   }
 }
 
-function build(plugin, kibanaVersion, deps, cb) {
+function build(plugin, buildVersion, kibanaVersion, deps, cb) {
   var buildId = `${plugin.id}-${buildVersion}`;
 
   var files = [
