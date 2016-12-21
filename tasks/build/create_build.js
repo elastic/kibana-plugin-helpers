@@ -30,6 +30,10 @@ module.exports = function createBuild(plugin, buildTarget, buildVersion, kibanaV
             date: new Date().toString()
           };
 
+          // remove development properties from the package file
+          delete pkg.scripts;
+          delete pkg.devDependencies;
+
           file.contents = toBuffer(JSON.stringify(pkg, null, 2));
         }
 
