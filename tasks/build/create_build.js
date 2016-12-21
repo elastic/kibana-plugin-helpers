@@ -7,14 +7,16 @@ var rename = require('gulp-rename');
 
 module.exports = function createBuild(plugin, buildVersion, kibanaVersion, files) {
   var buildId = `${plugin.id}-${buildVersion}`;
+  var buildSource = plugin.root;
+  var buildTarget = join(plugin.root, 'build');
 
   return new Promise(function (resolve) {
     vfs
-      .src(files, { cwd: plugin.root, base: plugin.root })
+      .src(files, { cwd: buildSource, base: buildSource })
 
       // modify the package.json file
       .pipe(map(function (file) {
-        if (file.basename === 'package.json' && file.dirname === plugin.root) {
+        if (file.basename === 'package.json' && file.dirname === buildSource) {
           var pkg = JSON.parse(file.contents.toString('utf8'));
 
           // rewrite the target kibana version while the
@@ -25,7 +27,7 @@ module.exports = function createBuild(plugin, buildVersion, kibanaVersion, files
 
           // append build info
           pkg.build = {
-            git: gitInfo(plugin.root),
+            git: gitInfo(buildSource),
             date: new Date().toString()
           };
 
@@ -35,13 +37,13 @@ module.exports = function createBuild(plugin, buildVersion, kibanaVersion, files
         return file;
       }))
 
-      // put all files inside the correct directoried
+      // put all files inside the correct directories
       .pipe(rename(function nestFileInDir(path) {
         path.dirname = join('kibana', plugin.id, path.dirname);
       }))
 
       .pipe(zip(`${buildId}.zip`))
-      .pipe(vfs.dest(join(plugin.root, 'build')))
+      .pipe(vfs.dest(buildTarget))
       .on('end', resolve);
   });
 };
