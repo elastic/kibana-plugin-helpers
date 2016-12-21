@@ -1,7 +1,6 @@
 /*eslint-env jest*/
 const resolve = require('path').resolve;
 const fs = require('fs');
-
 const del = require('del');
 
 const buildAction = require('./build_action');
