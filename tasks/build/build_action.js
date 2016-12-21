@@ -6,9 +6,16 @@ var join = require('path').join;
 var inquirer = require('inquirer');
 var execFileSync = require('child_process').execFileSync;
 
+var defaultFiles = [
+  'package.json',
+  'index.js',
+  '{lib,public,server,webpackShims}/**/*'
+];
+
 module.exports = function (plugin, run, options) {
   var buildVersion = plugin.version;
   var kibanaVersion = (plugin.pkg.kibana && plugin.pkg.kibana.version) || plugin.pkg.version;
+  var files = (options.files && options.files.length) ? options.files : defaultFiles;
 
   // allow options to override plugin info
   if (options.buildVersion) buildVersion = options.buildVersion;
@@ -19,10 +26,10 @@ module.exports = function (plugin, run, options) {
   return new Promise(function (resolve, reject) {
     if (kibanaVersion === 'kibana') {
       askForKibanaVersion(function (customKibanaVersion) {
-        build(plugin, buildVersion, customKibanaVersion, deps, onComplete);
+        build(plugin, buildVersion, customKibanaVersion, deps, files, onComplete);
       });
     } else {
-      build(plugin, buildVersion, kibanaVersion, deps, onComplete);
+      build(plugin, buildVersion, kibanaVersion, deps, files, onComplete);
     }
 
     function onComplete(err) {
@@ -78,14 +85,8 @@ function gitInfo(rootPath) {
   }
 }
 
-function build(plugin, buildVersion, kibanaVersion, deps, cb) {
+function build(plugin, buildVersion, kibanaVersion, deps, files, cb) {
   var buildId = `${plugin.id}-${buildVersion}`;
-
-  var files = [
-    'package.json',
-    'index.js',
-    '{lib,public,server,webpackShims}/**/*'
-  ];
 
   if (deps.length === 1) {
     files.push(`node_modules/${ deps[0] }/**/*`);

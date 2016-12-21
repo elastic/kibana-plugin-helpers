@@ -31,7 +31,7 @@ enableCollectingUnknownOptions(
 );
 
 program
-  .command('build')
+  .command('build [files...]')
   .description('Build a distributable archive')
   .on('--help', docs('build'))
   .option('-b, --build-version <version>', 'Version for the build output')
@@ -40,6 +40,7 @@ program
     run('build', {
       buildVersion: command.buildVersion,
       kibanaVersion: command.kibanaVersion,
+      files: files,
     });
   }));
 
