@@ -5,14 +5,8 @@ var zip = require('gulp-zip');
 var map = require('through2-map').obj;
 var rename = require('gulp-rename');
 
-module.exports = function createBuild(plugin, buildVersion, kibanaVersion, deps, files) {
+module.exports = function createBuild(plugin, buildVersion, kibanaVersion, files) {
   var buildId = `${plugin.id}-${buildVersion}`;
-
-  if (deps.length === 1) {
-    files.push(`node_modules/${ deps[0] }/**/*`);
-  } else if (deps.length) {
-    files.push(`node_modules/{${ deps.join(',') }}/**/*`);
-  }
 
   return new Promise(function (resolve) {
     vfs

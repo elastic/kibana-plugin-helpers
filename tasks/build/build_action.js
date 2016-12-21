@@ -18,15 +18,21 @@ module.exports = function (plugin, run, options) {
   if (options.buildVersion) buildVersion = options.buildVersion;
   if (options.kibanaVersion) kibanaVersion = options.kibanaVersion;
 
+  // add dependency files
   var deps = Object.keys(plugin.pkg.dependencies || {});
+  if (deps.length === 1) {
+    files.push(`node_modules/${ deps[0] }/**/*`);
+  } else if (deps.length) {
+    files.push(`node_modules/{${ deps.join(',') }}/**/*`);
+  }
 
   return new Promise(function (resolve, reject) {
     if (kibanaVersion === 'kibana') {
       askForKibanaVersion(function (customKibanaVersion) {
-        createBuild(plugin, buildVersion, customKibanaVersion, deps, files).then(resolve);
+        createBuild(plugin, buildVersion, customKibanaVersion, files).then(resolve);
       });
     } else {
-      createBuild(plugin, buildVersion, kibanaVersion, deps, files).then(resolve);
+      createBuild(plugin, buildVersion, kibanaVersion, files).then(resolve);
     }
   });
 };
