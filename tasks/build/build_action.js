@@ -2,17 +2,16 @@ var inquirer = require('inquirer');
 
 var createBuild = require('./create_build');
 
-var defaultFiles = [
-  'package.json',
-  'index.js',
-  '{lib,public,server,webpackShims}/**/*'
-];
-
 module.exports = function (plugin, run, options) {
   options = options || {};
   var buildVersion = plugin.version;
   var kibanaVersion = (plugin.pkg.kibana && plugin.pkg.kibana.version) || plugin.pkg.version;
-  var files = (options.files && options.files.length) ? options.files : defaultFiles;
+  var buildFiles = plugin.buildSourcePatterns;
+
+  // allow source files to be overridden
+  if (options.files && options.files.length) {
+    buildFiles = options.files;
+  }
 
   // allow options to override plugin info
   if (options.buildVersion) buildVersion = options.buildVersion;
@@ -21,18 +20,18 @@ module.exports = function (plugin, run, options) {
   // add dependency files
   var deps = Object.keys(plugin.pkg.dependencies || {});
   if (deps.length === 1) {
-    files.push(`node_modules/${ deps[0] }/**/*`);
+    buildFiles.push(`node_modules/${ deps[0] }/**/*`);
   } else if (deps.length) {
-    files.push(`node_modules/{${ deps.join(',') }}/**/*`);
+    buildFiles.push(`node_modules/{${ deps.join(',') }}/**/*`);
   }
 
   return new Promise(function (resolve, reject) {
     if (kibanaVersion === 'kibana') {
       askForKibanaVersion(function (customKibanaVersion) {
-        createBuild(plugin, buildVersion, customKibanaVersion, files).then(resolve);
+        createBuild(plugin, buildVersion, customKibanaVersion, buildFiles).then(resolve);
       });
     } else {
-      createBuild(plugin, buildVersion, kibanaVersion, files).then(resolve);
+      createBuild(plugin, buildVersion, kibanaVersion, buildFiles).then(resolve);
     }
   });
 };

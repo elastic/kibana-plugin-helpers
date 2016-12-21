@@ -51,16 +51,10 @@ describe('build_action', () => {
     });
 
     it('uses default file list without files option', function () {
-      var defaultFiles = [
-        'package.json',
-        'index.js',
-        '{lib,public,server,webpackShims}/**/*'
-      ];
-
       return buildAction(PLUGIN).then(() => {
         expect(mockBuild.mock.calls).toHaveLength(1);
         const [ plugin, buildVersion, kibanaVersion, files ] = mockBuild.mock.calls[0];
-        defaultFiles.forEach(file => expect(files).toContain(file));
+        PLUGIN.buildSourcePatterns.forEach(file => expect(files).toContain(file));
       });
     });
 
