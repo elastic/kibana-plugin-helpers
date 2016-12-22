@@ -34,10 +34,12 @@ program
   .command('build [files...]')
   .description('Build a distributable archive')
   .on('--help', docs('build'))
+  .option('--build-destination <path>', 'Custom target path for the build, relative to the plugin root')
   .option('-b, --build-version <version>', 'Version for the build output')
   .option('-k, --kibana-version <version>', 'Kibana version for the build output')
   .action(taskRunner(function (command, files) {
     run('build', {
+      buildDestination: command.buildDestination,
       buildVersion: command.buildVersion,
       kibanaVersion: command.kibanaVersion,
       files: files,
