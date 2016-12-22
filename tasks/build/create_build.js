@@ -39,7 +39,8 @@ module.exports = function createBuild(plugin, buildVersion, kibanaVersion, files
 
       // put all files inside the correct directories
       .pipe(rename(function nestFileInDir(path) {
-        path.dirname = join('kibana', plugin.id, path.dirname);
+        var nonRelativeDirname = path.dirname.replace(/^(\.\.\/?)+/g, '');
+        path.dirname = join('kibana', plugin.id, nonRelativeDirname);
       }))
 
       .pipe(zip(`${buildId}.zip`))
