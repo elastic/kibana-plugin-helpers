@@ -6,7 +6,7 @@ var del = require('del');
 var vfs = require('vinyl-fs');
 var rename = require('gulp-rename');
 
-var rewritePackage = require('./rewrite_package');
+var rewritePackageJson = require('./rewrite_package_json');
 var gitInfo = require('./git_info');
 
 module.exports = function createBuild(plugin, buildTarget, buildVersion, kibanaVersion, files) {
@@ -19,7 +19,7 @@ module.exports = function createBuild(plugin, buildTarget, buildVersion, kibanaV
         vfs
           .src(files, { cwd: buildSource, base: buildSource })
           // modify the package.json file
-          .pipe(rewritePackage(buildSource, buildVersion, kibanaVersion))
+          .pipe(rewritePackageJson(buildSource, buildVersion, kibanaVersion))
 
           // put all files inside the correct directories
           .pipe(rename(function nestFileInDir(path) {
