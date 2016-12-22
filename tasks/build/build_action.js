@@ -17,33 +17,23 @@ module.exports = function (plugin, run, options) {
   if (options.buildVersion) buildVersion = options.buildVersion;
   if (options.kibanaVersion) kibanaVersion = options.kibanaVersion;
 
-  // add dependency files
-  var deps = Object.keys(plugin.pkg.dependencies || {});
-  if (deps.length === 1) {
-    buildFiles.push(`node_modules/${ deps[0] }/**/*`);
-  } else if (deps.length) {
-    buildFiles.push(`node_modules/{${ deps.join(',') }}/**/*`);
+  if (kibanaVersion === 'kibana') {
+    return askForKibanaVersion().then(function (customKibanaVersion) {
+      return createBuild(plugin, buildVersion, customKibanaVersion, buildFiles);
+    });
+  } else {
+    return createBuild(plugin, buildVersion, kibanaVersion, buildFiles);
   }
-
-  return new Promise(function (resolve, reject) {
-    if (kibanaVersion === 'kibana') {
-      askForKibanaVersion(function (customKibanaVersion) {
-        createBuild(plugin, buildVersion, customKibanaVersion, buildFiles).then(resolve);
-      });
-    } else {
-      createBuild(plugin, buildVersion, kibanaVersion, buildFiles).then(resolve);
-    }
-  });
 };
 
 function askForKibanaVersion(cb) {
-  inquirer.prompt([
+  return inquirer.prompt([
     {
       type: 'input',
       name: 'kibanaVersion',
       message: 'What version of Kibana are you building for?'
     }
   ]).then(function (answers) {
-    cb(answers.kibanaVersion);
+    return answers.kibanaVersion;
   });
 }
