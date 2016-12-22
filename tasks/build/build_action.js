@@ -33,7 +33,7 @@ module.exports = function (plugin, run, options) {
 
   return buildStep
     .then(function () {
-      if (options.skipPackage) return;
+      if (options.skipArchive) return;
       return createPackage(plugin, buildVersion);
     })
     .catch(function (err) {
