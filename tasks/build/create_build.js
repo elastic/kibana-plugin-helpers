@@ -1,14 +1,15 @@
 var join = require('path').join;
 var relative = require('path').relative;
+var statSync = require('fs').statSync;
 var execFileSync = require('child_process').execFileSync;
 var del = require('del');
 var vfs = require('vinyl-fs');
-var zip = require('gulp-zip');
-var map = require('through2-map').obj;
 var rename = require('gulp-rename');
 
+var rewritePackage = require('./rewrite_package');
+var gitInfo = require('./git_info');
+
 module.exports = function createBuild(plugin, buildTarget, buildVersion, kibanaVersion, files) {
-  var buildId = `${plugin.id}-${buildVersion}`;
   var buildSource = plugin.root;
   var buildRoot = join(buildTarget, 'kibana', plugin.id);
 
@@ -33,71 +34,18 @@ module.exports = function createBuild(plugin, buildTarget, buildVersion, kibanaV
     })
     .then(function () {
       // install packages in build
-      execFileSync('npm', ['install', '--production', '--no-bin-links', '--silent'], { cwd: buildRoot });
-    })
-    .catch(function (err) {
-      console.log('BUILD FAILED:', err);
-    });
-};
-
-function toBuffer(string) {
-  if (typeof Buffer.from === 'function') {
-    return Buffer.from(string, 'utf8');
-  } else {
-    // this was deprecated in node v5 in favor
-    // of Buffer.from(string, encoding)
-    return new Buffer(string, 'utf8');
-  }
-}
-
-function rewritePackage(buildSource, buildVersion, kibanaVersion) {
-  return map(function (file) {
-    if (file.basename === 'package.json' && file.dirname === buildSource) {
-      var pkg = JSON.parse(file.contents.toString('utf8'));
-
-      // rewrite the target kibana version while the
-      // file is on it's way to the archive
-      if (!pkg.kibana) pkg.kibana = {};
-      pkg.kibana.version = kibanaVersion;
-      pkg.version = buildVersion;
-
-      // append build info
-      pkg.build = {
-        git: gitInfo(buildSource),
-        date: new Date().toString()
+      var options = {
+        cwd: buildRoot,
+        stdio: ['ignore', 'ignore', 'pipe'],
       };
 
-      // remove development properties from the package file
-      delete pkg.scripts;
-      delete pkg.devDependencies;
-
-      file.contents = toBuffer(JSON.stringify(pkg, null, 2));
-    }
-
-    return file;
-  });
-}
-
-function gitInfo(rootPath) {
-  try {
-    var LOG_SEPARATOR = '||';
-    var commitCount = execFileSync('git', ['rev-list', '--count', 'HEAD'], {
-      cwd: rootPath,
-      stdio: ['ignore', 'pipe', 'ignore'],
-      encoding: 'utf8',
+      try {
+        // use yarn if yarn lockfile is found in the build
+        statSync(join(buildRoot, 'yarn.lock'));
+        execFileSync('yarn', ['install', '--production'], options);
+      } catch (e) {
+        // use npm if there is no yarn lockfile in the build
+        execFileSync('npm', ['install', '--production', '--no-bin-links'], options);
+      }
     });
-    var logLine = execFileSync('git', ['log', '--pretty=%h' + LOG_SEPARATOR + '%cD', '-n', '1'], {
-      cwd: rootPath,
-      stdio: ['ignore', 'pipe', 'ignore'],
-      encoding: 'utf8',
-    }).split(LOG_SEPARATOR);
-
-    return {
-      count: commitCount.trim(),
-      sha: logLine[0].trim(),
-      date: logLine[1].trim(),
-    };
-  } catch (e) {
-    return {};
-  }
-}
+};
