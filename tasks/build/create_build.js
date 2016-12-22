@@ -1,5 +1,6 @@
 var join = require('path').join;
 var execFileSync = require('child_process').execFileSync;
+var del = require('del');
 var vfs = require('vinyl-fs');
 var zip = require('gulp-zip');
 var map = require('through2-map').obj;
@@ -9,23 +10,29 @@ module.exports = function createBuild(plugin, buildTarget, buildVersion, kibanaV
   var buildId = `${plugin.id}-${buildVersion}`;
   var buildSource = plugin.root;
 
-  return new Promise(function (resolve) {
-    vfs
-      .src(files, { cwd: buildSource, base: buildSource })
+  return del(buildTarget)
+    .then(function () {
+      return new Promise(function (resolve, reject) {
+        vfs
+          .src(files, { cwd: buildSource, base: buildSource })
+          // modify the package.json file
+          .pipe(rewritePackage(buildSource, buildVersion, kibanaVersion))
 
-      // modify the package.json file
-      .pipe(rewritePackage(buildSource, buildVersion, kibanaVersion))
+          // put all files inside the correct directories
+          .pipe(rename(function nestFileInDir(path) {
+            var nonRelativeDirname = path.dirname.replace(/^(\.\.\/?)+/g, '');
+            path.dirname = join('kibana', plugin.id, nonRelativeDirname);
+          }))
 
-      // put all files inside the correct directories
-      .pipe(rename(function nestFileInDir(path) {
-        var nonRelativeDirname = path.dirname.replace(/^(\.\.\/?)+/g, '');
-        path.dirname = join('kibana', plugin.id, nonRelativeDirname);
-      }))
-
-      .pipe(zip(`${buildId}.zip`))
-      .pipe(vfs.dest(buildTarget))
-      .on('end', resolve);
-  });
+          // .pipe(zip(`${buildId}.zip`))
+          .pipe(vfs.dest(buildTarget))
+          .on('end', resolve)
+          .on('error', reject);
+      });
+    })
+    .catch(function (err) {
+      console.log('BUILD FAILED:', err);
+    });
 };
 
 function toBuffer(string) {
