@@ -1,4 +1,5 @@
 var join = require('path').join;
+var relative = require('path').relative;
 var execFileSync = require('child_process').execFileSync;
 var del = require('del');
 var vfs = require('vinyl-fs');
@@ -9,6 +10,7 @@ var rename = require('gulp-rename');
 module.exports = function createBuild(plugin, buildTarget, buildVersion, kibanaVersion, files) {
   var buildId = `${plugin.id}-${buildVersion}`;
   var buildSource = plugin.root;
+  var buildRoot = join(buildTarget, 'kibana', plugin.id);
 
   return del(buildTarget)
     .then(function () {
@@ -21,14 +23,17 @@ module.exports = function createBuild(plugin, buildTarget, buildVersion, kibanaV
           // put all files inside the correct directories
           .pipe(rename(function nestFileInDir(path) {
             var nonRelativeDirname = path.dirname.replace(/^(\.\.\/?)+/g, '');
-            path.dirname = join('kibana', plugin.id, nonRelativeDirname);
+            path.dirname = join(relative(buildTarget, buildRoot), nonRelativeDirname);
           }))
 
-          // .pipe(zip(`${buildId}.zip`))
           .pipe(vfs.dest(buildTarget))
           .on('end', resolve)
           .on('error', reject);
       });
+    })
+    .then(function () {
+      // install packages in build
+      execFileSync('npm', ['install', '--production', '--no-bin-links', '--silent'], { cwd: buildRoot });
     })
     .catch(function (err) {
       console.log('BUILD FAILED:', err);
