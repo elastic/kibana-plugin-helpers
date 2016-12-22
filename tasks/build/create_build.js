@@ -14,31 +14,7 @@ module.exports = function createBuild(plugin, buildTarget, buildVersion, kibanaV
       .src(files, { cwd: buildSource, base: buildSource })
 
       // modify the package.json file
-      .pipe(map(function (file) {
-        if (file.basename === 'package.json' && file.dirname === buildSource) {
-          var pkg = JSON.parse(file.contents.toString('utf8'));
-
-          // rewrite the target kibana version while the
-          // file is on it's way to the archive
-          if (!pkg.kibana) pkg.kibana = {};
-          pkg.kibana.version = kibanaVersion;
-          pkg.version = buildVersion;
-
-          // append build info
-          pkg.build = {
-            git: gitInfo(buildSource),
-            date: new Date().toString()
-          };
-
-          // remove development properties from the package file
-          delete pkg.scripts;
-          delete pkg.devDependencies;
-
-          file.contents = toBuffer(JSON.stringify(pkg, null, 2));
-        }
-
-        return file;
-      }))
+      .pipe(rewritePackage(buildSource, buildVersion, kibanaVersion))
 
       // put all files inside the correct directories
       .pipe(rename(function nestFileInDir(path) {
@@ -60,6 +36,34 @@ function toBuffer(string) {
     // of Buffer.from(string, encoding)
     return new Buffer(string, 'utf8');
   }
+}
+
+function rewritePackage(buildSource, buildVersion, kibanaVersion) {
+  return map(function (file) {
+    if (file.basename === 'package.json' && file.dirname === buildSource) {
+      var pkg = JSON.parse(file.contents.toString('utf8'));
+
+      // rewrite the target kibana version while the
+      // file is on it's way to the archive
+      if (!pkg.kibana) pkg.kibana = {};
+      pkg.kibana.version = kibanaVersion;
+      pkg.version = buildVersion;
+
+      // append build info
+      pkg.build = {
+        git: gitInfo(buildSource),
+        date: new Date().toString()
+      };
+
+      // remove development properties from the package file
+      delete pkg.scripts;
+      delete pkg.devDependencies;
+
+      file.contents = toBuffer(JSON.stringify(pkg, null, 2));
+    }
+
+    return file;
+  });
 }
 
 function gitInfo(rootPath) {
