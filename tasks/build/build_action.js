@@ -1,4 +1,5 @@
 var join = require('path').join;
+var resolve = require('path').resolve;
 var inquirer = require('inquirer');
 
 var createBuild = require('./create_build');
@@ -16,7 +17,7 @@ module.exports = function (plugin, run, options) {
   }
 
   // allow options to override plugin info
-  if (options.buildDestination) buildTarget = options.buildDestination;
+  if (options.buildDestination) buildTarget = resolve(plugin.root, options.buildDestination);
   if (options.buildVersion) buildVersion = options.buildVersion;
   if (options.kibanaVersion) kibanaVersion = options.kibanaVersion;
 

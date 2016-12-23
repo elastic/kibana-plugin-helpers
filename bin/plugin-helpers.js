@@ -34,7 +34,7 @@ program
   .command('build [files...]')
   .description('Build a distributable archive')
   .on('--help', docs('build'))
-  .option('--build-destination <path>', 'Custom target path for the build, relative to the plugin root')
+  .option('--build-destination <path>', 'Target path for the build output, absolute or relative to the plugin root')
   .option('-b, --build-version <version>', 'Version for the build output')
   .option('-k, --kibana-version <version>', 'Kibana version for the build output')
   .action(taskRunner(function (command, files) {
