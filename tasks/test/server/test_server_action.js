@@ -13,7 +13,7 @@ module.exports = function (plugin, run, options) {
     testPaths = options.files;
   }
 
-  var cmd = 'mocha';
+  var cmd = resolve(plugin.kibanaRoot, 'node_modules', '.bin', 'mocha');
   var args = ['--require', mochaSetupJs].concat(testPaths);
   var path = `${kibanaBins}${delimiter}${process.env.PATH}`;
 
