@@ -6,7 +6,6 @@ const zip = require('gulp-zip');
 
 module.exports = function createBuild(plugin, buildVersion) {
   const buildId = `${plugin.id}-${buildVersion}`;
-  const buildSource = plugin.root;
   const buildTarget = join(plugin.root, 'build');
   const buildRoot = join(buildTarget, 'kibana', plugin.id);
 

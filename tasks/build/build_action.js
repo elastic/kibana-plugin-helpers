@@ -41,7 +41,7 @@ module.exports = function (plugin, run, options) {
     });
 };
 
-function askForKibanaVersion(cb) {
+function askForKibanaVersion() {
   return inquirer.prompt([
     {
       type: 'input',

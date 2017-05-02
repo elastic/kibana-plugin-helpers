@@ -7,7 +7,6 @@ const vfs = require('vinyl-fs');
 const rename = require('gulp-rename');
 
 const rewritePackageJson = require('./rewrite_package_json');
-const gitInfo = require('./git_info');
 const winCmd = require('../../lib/win_cmd');
 
 module.exports = function createBuild(plugin, buildTarget, buildVersion, kibanaVersion, files) {
