@@ -4,7 +4,7 @@ const del = require('del');
 const vfs = require('vinyl-fs');
 const zip = require('gulp-zip');
 
-module.exports = function createBuild(plugin, buildVersion) {
+module.exports = function createPackage(plugin, buildVersion) {
   const buildId = `${plugin.id}-${buildVersion}`;
   const buildTarget = join(plugin.root, 'build');
   const buildRoot = join(buildTarget, 'kibana', plugin.id);
