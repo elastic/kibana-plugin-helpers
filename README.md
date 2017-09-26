@@ -34,6 +34,30 @@ Plugin Helpers | Kibana
 6.x | 4.6+
 5.x | 4.x
 
+## Configuration
+
+`plugin-helpers` accepts a number of settings, which can be specified at runtime, or included in a `.kibana-plugin-helpers.json` file if you'd like to bundle those settings with your project. 
+
+It will also observe a `.kibana-plugin-helpers.dev.json`, much like Kibana does, which we encourage you to add to your `.gitignore` file and use for local settings that you don't intend to share. These "dev" settings will override any settings in the normal json config.
+
+All configuration setting listed below can simply can be included in the json config files. If you intend to inline the command, you will need to convert the setting to snake case (ie. `skipArchive` becomes `--skip-archive`).
+
+### `start`
+
+Setting | Description
+------- | -----------
+`includePlugins` | Intended to be used in a config file, an array of additional plugin paths to include, absolute or relative to the plugin root
+`*` | Any options/flags included will be passed unmodified to the Kibana binary
+
+### `build`
+
+Setting | Description
+------- | -----------
+`skipArchive` | Don't create the zip file, leave the build path alone
+`buildDestination` | Target path for the build output, absolute or relative to the plugin root
+`buildVersion` | Version for the build output
+`kibanaVersion` | Kibana version for the build output (added to package.json)
+
 # License
 
 Apache-2.0
