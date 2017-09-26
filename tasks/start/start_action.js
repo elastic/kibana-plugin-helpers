@@ -1,4 +1,3 @@
-const { resolve } = require('path');
 const execFileSync = require('child_process').execFileSync;
 
 module.exports = function (plugin, run, options) {
@@ -9,7 +8,7 @@ module.exports = function (plugin, run, options) {
 
   if (Array.isArray(plugin.includePlugins)) {
     plugin.includePlugins.forEach((path) => {
-      args = args.concat(['--plugin-path', resolve(path)]);
+      args = args.concat(['--plugin-path', path]);
     });
   }
 
