@@ -6,13 +6,10 @@ Just some helpers for kibana plugin devs.
 
 This simple CLI has several tasks that plugin devs can run from to easily debug, test, or package kibana plugins.
 
-See the [docs](docs) directory for more info.
-
 ```sh
 $ plugin-helpers help
 
   Usage: plugin-helpers [options] [command]
-
 
   Commands:
 
@@ -28,6 +25,14 @@ $ plugin-helpers help
     -V, --version  output the version number
 
 ```
+
+## Versions
+
+Plugin Helpers | Kibana
+-------------- | ------
+7.x | 4.6+ (node 6+ only)
+6.x | 4.6+
+5.x | 4.x
 
 # License
 
