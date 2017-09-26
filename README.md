@@ -1,5 +1,6 @@
 # kibana-plugin-helpers
 
+[![Apache License](https://img.shields.io/badge/license-apache_2.0-a9215a.svg)](https://raw.githubusercontent.com/elastic/kibana-plugin-helpers/master/LICENSE)
 [![CircleCI](https://circleci.com/gh/elastic/kibana-plugin-helpers/tree/master.svg?style=svg)](https://circleci.com/gh/elastic/kibana-plugin-helpers/tree/master)
 
 Just some helpers for kibana plugin devs.
@@ -57,7 +58,3 @@ Setting | Description
 `buildDestination` | Target path for the build output, absolute or relative to the plugin root
 `buildVersion` | Version for the build output
 `kibanaVersion` | Kibana version for the build output (added to package.json)
-
-# License
-
-Apache-2.0
