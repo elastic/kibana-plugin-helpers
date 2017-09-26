@@ -1,7 +1,7 @@
 # kibana-plugin-helpers
 
 [![Apache License](https://img.shields.io/badge/license-apache_2.0-a9215a.svg)](https://raw.githubusercontent.com/elastic/kibana-plugin-helpers/master/LICENSE)
-[![CircleCI](https://circleci.com/gh/elastic/kibana-plugin-helpers/tree/master.svg?style=svg)](https://circleci.com/gh/elastic/kibana-plugin-helpers/tree/master)
+[![CircleCI](https://img.shields.io/circleci/project/github/elastic/kibana-plugin-helpers.svg)](https://circleci.com/gh/elastic/kibana-plugin-helpers/tree/master)
 
 Just some helpers for kibana plugin devs.
 
