@@ -13,9 +13,9 @@
   "author": "Spencer Alger <email@spalger.com>",
   "license": "Apache-2.0",
   "scripts": {
-    "test": "npm run lint && npm run jest",
-    "test:only": "npm run jest",
-    "jest": "jest",
+    "test": "npm run lint && jest",
+    "test:only": "jest",
+    "test:dev": "jest --watch",
     "lint": "eslint bin/ help/ tasks/"
   },
   "dependencies": {
