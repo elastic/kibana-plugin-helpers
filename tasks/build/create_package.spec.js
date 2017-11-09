@@ -22,11 +22,11 @@ describe('create_build', () => {
   describe('creating the package', function () {
     it('creates zip file in build target path', function () {
       return createPackage(PLUGIN, PLUGIN_BUILD_DIR, buildVersion)
-      .then(() => {
-        const zipFile = resolve(PLUGIN_BUILD_DIR, packageFile);
-        const stats = statSync(zipFile);
-        expect(stats.isFile()).toBeTruthy();
-      });
+        .then(() => {
+          const zipFile = resolve(PLUGIN_BUILD_DIR, packageFile);
+          const stats = statSync(zipFile);
+          expect(stats.isFile()).toBeTruthy();
+        });
     });
   });
 });

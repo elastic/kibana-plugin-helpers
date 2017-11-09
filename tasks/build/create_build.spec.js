@@ -23,23 +23,23 @@ describe('create_build', () => {
       expect(PLUGIN.pkg.devDependencies).not.toBeUndefined();
 
       return createBuild(PLUGIN, buildTarget, buildVersion, kibanaVersion, buildFiles)
-      .then(() => {
-        const pkg = require(resolve(PLUGIN_BUILD_TARGET, 'package.json'));
-        expect(pkg.scripts).toBeUndefined();
-        expect(pkg.devDependencies).toBeUndefined();
-      });
+        .then(() => {
+          const pkg = require(resolve(PLUGIN_BUILD_TARGET, 'package.json'));
+          expect(pkg.scripts).toBeUndefined();
+          expect(pkg.devDependencies).toBeUndefined();
+        });
     });
 
     it('adds build metadata to package.json', function () {
       expect(PLUGIN.pkg.build).toBeUndefined();
 
       return createBuild(PLUGIN, buildTarget, buildVersion, kibanaVersion, buildFiles)
-      .then(() => {
-        const pkg = require(resolve(PLUGIN_BUILD_TARGET, 'package.json'));
-        expect(pkg.build).not.toBeUndefined();
-        expect(pkg.build.git).not.toBeUndefined();
-        expect(pkg.build.date).not.toBeUndefined();
-      });
+        .then(() => {
+          const pkg = require(resolve(PLUGIN_BUILD_TARGET, 'package.json'));
+          expect(pkg.build).not.toBeUndefined();
+          expect(pkg.build.git).not.toBeUndefined();
+          expect(pkg.build.date).not.toBeUndefined();
+        });
     });
   });
 });

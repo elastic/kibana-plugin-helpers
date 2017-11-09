@@ -27,9 +27,6 @@
     "through2-map": "^3.0.0",
     "vinyl-fs": "2.3.1"
   },
-  "directories": {
-    "doc": "docs"
-  },
   "devDependencies": {
     "@elastic/eslint-config-kibana": "^0.13.0",
     "babel-eslint": "^7.2.3",
@@ -41,6 +38,12 @@
     "eslint-plugin-prefer-object-spread": "^1.2.1",
     "eslint-plugin-react": "^7.1.0",
     "jest": "^17.0.3"
+  },
+  "engines" : {
+    "node" : "^6.11.5 || ^8.8.0"
+  },
+  "directories": {
+    "doc": "docs"
   },
   "repository": {
     "type": "git",

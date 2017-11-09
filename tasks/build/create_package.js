@@ -18,8 +18,8 @@ module.exports = function createPackage(plugin, buildTarget, buildVersion) {
       .on('end', resolve)
       .on('error', reject);
   })
-  .then(function () {
-    // clean up the build path
-    return del(join(buildTarget, 'kibana'));
-  });
+    .then(function () {
+      // clean up the build path
+      return del(join(buildTarget, 'kibana'));
+    });
 };
