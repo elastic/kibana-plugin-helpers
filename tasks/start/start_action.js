@@ -1,16 +1,16 @@
 const execFileSync = require('child_process').execFileSync;
-const { existsSync } = require('fs')
-const { resolve, join } = require('path')
+const { existsSync } = require('fs');
+const { resolve, join } = require('path');
 
 module.exports = function (plugin, run, options) {
   options = options || {};
   let args = [];
   let cmd;
-  const relativeScript = join('scripts', 'kibana.js')
+  const relativeScript = join('scripts', 'kibana.js');
   const absoluteScript = resolve(plugin.kibanaRoot, relativeScript);
   if (existsSync(absoluteScript)) {
-    cmd = 'node'
-    args.push(relativeScript)
+    cmd = 'node';
+    args.push(relativeScript);
   } else {
     cmd = (process.platform === 'win32') ? 'bin\\kibana.bat' : 'bin/kibana';
   }
