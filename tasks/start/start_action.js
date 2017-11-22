@@ -1,6 +1,6 @@
 const execFileSync = require('child_process').execFileSync;
 const  { join } = require('path');
-const split = require('argv-split')
+const split = require('argv-split');
 
 module.exports = function (plugin, run, options) {
   options = options || {};
