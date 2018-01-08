@@ -2,7 +2,7 @@ const join = require('path').join;
 const relative = require('path').relative;
 const del = require('del');
 const vfs = require('vinyl-fs');
-const zip = require('../../lib/zip');
+const zip = require('gulp-zip');
 
 module.exports = function createPackage(plugin, buildTarget, buildVersion) {
   const buildId = `${plugin.id}-${buildVersion}`;
