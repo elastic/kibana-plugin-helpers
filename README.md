@@ -1,9 +1,11 @@
 # kibana-plugin-helpers
 
+## Note: the default branch on this repo is 7.x since the changes in master have moved to the kibana project
+
+> **NOTE:** Kibana now includes [its own plugin helpers](https://github.com/elastic/kibana/tree/master/packages/kbn-plugin-helpers). You should use these if you are targeting Kibana 6.3+. See https://github.com/elastic/kibana/tree/master/packages/kbn-plugin-helpers for installation info.
+
 [![Apache License](https://img.shields.io/badge/license-apache_2.0-a9215a.svg)](https://raw.githubusercontent.com/elastic/kibana-plugin-helpers/master/LICENSE)
 [![CircleCI](https://img.shields.io/circleci/project/github/elastic/kibana-plugin-helpers.svg)](https://circleci.com/gh/elastic/kibana-plugin-helpers/tree/master)
-
-## Note: the default branch on this repo is 7.x since the changes in master have moved to the kibana project
 
 Just some helpers for kibana plugin devs.
 
@@ -33,13 +35,14 @@ $ plugin-helpers help
 
 Plugin Helpers | Kibana
 -------------- | ------
-7.x | 4.6+ (node 6+ only)
-6.x | 4.6+
+[bundled plugin helpers](https://github.com/elastic/kibana/tree/master/packages/kbn-plugin-helpers) | 6.3+
+7.x | 4.6.x to 6.2 (node 6+ only)
+6.x | 4.6.x to 6.2
 5.x | 4.x
 
 ## Configuration
 
-`plugin-helpers` accepts a number of settings, which can be specified at runtime, or included in a `.kibana-plugin-helpers.json` file if you'd like to bundle those settings with your project. 
+`plugin-helpers` accepts a number of settings, which can be specified at runtime, or included in a `.kibana-plugin-helpers.json` file if you'd like to bundle those settings with your project.
 
 It will also observe a `.kibana-plugin-helpers.dev.json`, much like Kibana does, which we encourage you to add to your `.gitignore` file and use for local settings that you don't intend to share. These "dev" settings will override any settings in the normal json config.
 
