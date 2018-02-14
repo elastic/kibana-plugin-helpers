@@ -3,10 +3,23 @@ const delimiter = require('path').delimiter;
 const execFileSync = require('child_process').execFileSync;
 const winCmd = require('../../../lib/win_cmd');
 
+function canRequire(path) {
+  try {
+    require.resolve(path);
+    return true;
+  } catch (error) {
+    if (error.code !== 'MODULE_NOT_FOUND') {
+      throw error;
+    }
+    return false;
+  }
+}
+
 module.exports = function (plugin, run, options) {
   options = options || {};
   const kibanaBins = resolve(plugin.kibanaRoot, 'node_modules/.bin');
-  const mochaSetupJs = resolve(plugin.kibanaRoot, 'test/mocha_setup.js');
+  const mochaSetupScript = resolve(plugin.kibanaRoot, 'test/mocha_setup.js');
+  const babelRegisterScript = resolve(plugin.kibanaRoot, 'src/optimize/babel/register');
   let testPaths = plugin.serverTestPatterns;
 
   // allow server test files to be overridden
@@ -16,7 +29,7 @@ module.exports = function (plugin, run, options) {
 
   const fullCmd = resolve(plugin.kibanaRoot, 'node_modules', '.bin', 'mocha');
   const cmd = winCmd(fullCmd);
-  const args = ['--require', mochaSetupJs].concat(testPaths);
+  const args = ['--require', canRequire(mochaSetupScript) ? mochaSetupScript : babelRegisterScript].concat(testPaths);
   const path = `${kibanaBins}${delimiter}${process.env.PATH}`;
 
   execFileSync(cmd, args, {
