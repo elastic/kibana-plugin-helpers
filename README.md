@@ -3,6 +3,8 @@
 [![Apache License](https://img.shields.io/badge/license-apache_2.0-a9215a.svg)](https://raw.githubusercontent.com/elastic/kibana-plugin-helpers/master/LICENSE)
 [![CircleCI](https://img.shields.io/circleci/project/github/elastic/kibana-plugin-helpers.svg)](https://circleci.com/gh/elastic/kibana-plugin-helpers/tree/master)
 
+## Note: the default branch on this repo is 7.x since the changes in master have moved to the kibana project
+
 Just some helpers for kibana plugin devs.
 
 This simple CLI has several tasks that plugin devs can run from to easily debug, test, or package kibana plugins.
