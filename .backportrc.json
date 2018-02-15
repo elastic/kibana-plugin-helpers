@@ -1,0 +1,6 @@
+{
+  "upstream": "elastic/kibana-plugin-helpers",
+  "own": false,
+  "multipleCommits": false,
+  "labels": ["backport"]
+}
