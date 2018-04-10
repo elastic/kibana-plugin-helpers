@@ -86,5 +86,13 @@ describe('build_action', () => {
         options.files.forEach(file => expect(files).toContain(file));
       });
     });
+
+    it('rejects returned promise when build fails', () => {
+      mockBuild.mockImplementation(() => {
+        return Promise.reject(new Error('foo bar'));
+      });
+
+      return expect(buildAction(PLUGIN, noop)).rejects.toThrowErrorMatchingSnapshot();
+    });
   });
 });
