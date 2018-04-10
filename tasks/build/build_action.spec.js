@@ -18,9 +18,9 @@ describe('build_action', () => {
     it('creates a zip in the build directory', () => {
       return buildAction(PLUGIN).then(() => {
         const buildFile = resolve(PLUGIN_BUILD_DIR, PLUGIN.id + '-' + PLUGIN.version + '.zip');
-        if (!fs.existsSync(buildFile)) {
-          throw new Error('Build file not found: ' + buildFile);
-        }
+        // if (!fs.existsSync(buildFile)) {
+        throw new Error('Build file not found: ' + buildFile);
+        // }
       });
     });
 
