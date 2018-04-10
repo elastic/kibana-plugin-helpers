@@ -33,17 +33,22 @@
     "eslint": "^4.1.0",
     "eslint-plugin-babel": "^4.1.1",
     "eslint-plugin-import": "^2.6.0",
-    "eslint-plugin-jest": "^21.0.0",
+    "eslint-plugin-jest": "^21.15.0",
     "eslint-plugin-mocha": "^4.9.0",
     "eslint-plugin-prefer-object-spread": "^1.2.1",
     "eslint-plugin-react": "^7.1.0",
-    "jest": "^17.0.3"
+    "jest": "^22.4.3"
   },
   "engines": {
     "node": "^6.11.5 || ^8.8.0"
   },
   "directories": {
     "doc": "docs"
+  },
+  "jest": {
+    "modulePathIgnorePatterns": [
+      "__fixtures__"
+    ]
   },
   "repository": {
     "type": "git",
